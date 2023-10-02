@@ -292,7 +292,7 @@
           </span>
         </h2>
         <div class="contact__form-container">
-          <form action="#" class="contact__form">
+          <form action="#" class="contact__form" name="submit-to-google-sheet">
             <div class="contact__form-field">
               <label class="contact__form-label" for="name">Name</label>
               <input
@@ -395,5 +395,23 @@
     </footer>
 
     <script src="./index.js"></script>
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwabvhH3TUoHuXxLYlKF33aP85admXwkph01EiDAWMeh_uoSSvvgWdqBR1CcQ9OcTZkYg/exec'
+      const form = document.forms['submit-to-google-sheet']
+      const msg = document.getElementById("msg")
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => {
+            msg.innerHTML = "Message sent successfully" 
+            setTimeout(function(){
+              msg.innerHTML = ""
+            },5000)
+            form.reset()
+          })
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
